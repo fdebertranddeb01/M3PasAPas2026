@@ -1,4 +1,4 @@
-package fr.insa.beuvron.cours.m3;
+package fr.insa.toto;
 
 import com.vaadin.flow.theme.aura.Aura;
 import org.springframework.boot.SpringApplication;
