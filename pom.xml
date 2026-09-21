@@ -65,9 +65,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <!-- remplace normalement la dépendance directe à HikariCP, 
+         mais je veux garder la dépendance directe pour pouvoir configurer le pool de connexions
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>browserless-test-spring</artifactId>

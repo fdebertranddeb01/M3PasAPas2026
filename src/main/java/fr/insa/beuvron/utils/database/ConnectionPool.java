@@ -18,13 +18,18 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
 package fr.insa.beuvron.utils.database;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 /**
  * Définition d'une "connecion pool" à l'aide de la librairie HikariCP.
+ * 
  * <pre>
  * repris de https://www.baeldung.com/hikaricp.
  * Voir https://github.com/brettwooldridge/hikaricp/wiki/MYSQL-Configuration pour
@@ -41,36 +46,41 @@ public class ConnectionPool {
     // un bloc static directement dans une classe est exécuté au chargement
     // de la classe
     // pour une BdD en mémoire en utilisant le sgbd H2
+    // static {
+    // config.setJdbcUrl("jdbc:h2:mem:pourCoursVaadin");
+    // // peut être pas indispensable, mais dans le doute...
+    // config.setUsername("inutilePourH2Mem");
+    // config.setPassword("inutilePourH2Mem");
+    // config.setMaximumPoolSize(10);
+    // config.addDataSourceProperty("cachePrepStmts", "true");
+    // config.addDataSourceProperty("prepStmtCacheSize", "250");
+    // config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+    // config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
+    // ds = new HikariDataSource(config);
+    // }
+    // pour une BdD en utilisant le sgbd mysql pour module M3
     static {
-        config.setJdbcUrl("jdbc:h2:mem:pourCoursVaadin");
-        // peut être pas indispensable, mais dans le doute...
-        config.setUsername("inutilePourH2Mem");
-        config.setPassword("inutilePourH2Mem");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException ex) {
+            throw new Error("driver mysql not found", ex);
+        }
+        config.setJdbcUrl("jdbc:mysql://92.222.25.165:3306/m3_fdebertranddeb01");
+        config.setUsername("m3_fdebertranddeb01");
+        try {
+            config.setPassword(Files.readString(Path.of("J:\\beuvron\\dev\\passBdDM3.txt")).trim());
+        } catch (IOException e) {
+            throw new Error("erreur lecture mot de passe", e);
+        }
+        // config.setPassword("je ne le donne pas");
         config.setMaximumPoolSize(10);
         config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("useServerPrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
         config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
         ds = new HikariDataSource(config);
     }
-    // pour une BdD en utilisant le sgbd mysql pour module M3
-//    static {
-//        try {
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//        } catch (ClassNotFoundException ex) {
-//            throw new Error("driver mysql not found", ex);
-//        }
-//        config.setJdbcUrl("jdbc:mysql://92.222.25.165:3306/m3_fdebertranddeb01");
-//        config.setUsername("m3_fdebertranddeb01");
-//        config.setPassword("je ne le donne pas");
-//        config.setMaximumPoolSize(10);
-//        config.addDataSourceProperty("cachePrepStmts", "true");
-//        config.addDataSourceProperty("useServerPrepStmts", "true");
-//        config.addDataSourceProperty("prepStmtCacheSize", "250");
-//        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-//        config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
-//        ds = new HikariDataSource(config);
-//    }
 
     public static Connection getConnection() throws SQLException {
         return ds.getConnection();
