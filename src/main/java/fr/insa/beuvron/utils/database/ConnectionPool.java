@@ -73,7 +73,7 @@ public class ConnectionPool {
             throw new Error("erreur lecture mot de passe", e);
         }
         // config.setPassword("je ne le donne pas");
-        config.setMaximumPoolSize(10);
+        config.setMaximumPoolSize(2);
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("useServerPrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");

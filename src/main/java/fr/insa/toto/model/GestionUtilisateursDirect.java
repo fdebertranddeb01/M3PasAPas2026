@@ -1,26 +1,31 @@
 package fr.insa.toto.model;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import fr.insa.beuvron.utils.ConsoleFdB;
 
 public class GestionUtilisateursDirect {
 
-    public static void creeUtilisateur(Connection con, String nom, String pass) throws SQLException {
-        try (var pst = con.prepareStatement("INSERT INTO utilisateur(nom,pass) VALUES(?,?)")) {
+    public static void creeUtilisateur(Connection con,
+         String nom, String pass) throws SQLException {
+        try (var pst = con.prepareStatement(
+            "INSERT INTO utilisateur (surnom, pass) VALUES (?, ?)")) {
             pst.setString(1, nom);
             pst.setString(2, pass);
             pst.executeUpdate();
         }
     }
 
-    public static void supprimeUtilisateur(Connection con, int id) throws SQLException {
-        try (var pst = con.prepareStatement("DELETE FROM utilisateur WHERE id=?")) {
+    public static void supprimeUtilisateur(Connection con, 
+        int id) throws SQLException {
+        try (var pst = con.prepareStatement(
+            "DELETE FROM utilisateur WHERE id = ?")) {
             pst.setInt(1, id);
             pst.executeUpdate();
         }
-    }
+     }
 
     public static void demandeCreationUtilisateur(Connection con) throws SQLException {
         String nom = ConsoleFdB.entreeString("nom de l'utilisateur : ");
@@ -33,14 +38,16 @@ public class GestionUtilisateursDirect {
         supprimeUtilisateur(con, id);
     }
 
-    public static void listeTousUtilisateurs(Connection con) throws SQLException {
-        try (var pst = con.prepareStatement("SELECT * FROM utilisateur");
-                var rs = pst.executeQuery()) {
-            while (rs.next()) {
+    public static void listeTousUtilisateurs(Connection con) 
+    throws SQLException {
+        try (var pst = con.prepareStatement("SELECT id, surnom, pass FROM utilisateur");
+             ResultSet rs = pst.executeQuery()) {
+            System.out.println("Liste des utilisateurs :");
+            while (rs.next() ) {
                 int id = rs.getInt("id");
-                String nom = rs.getString("nom");
+                String nom = rs.getString(2);
                 String pass = rs.getString("pass");
-                System.out.println(id + " : " + nom + " / " + pass);
+                System.out.println("id : " + id + ", nom : " + nom + ", pass : " + pass);
             }
         }
     }

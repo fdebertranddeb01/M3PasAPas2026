@@ -10,23 +10,23 @@ import fr.insa.beuvron.utils.database.ConnectionSimpleSGBD;
 public class GestionSchema {
 
     public static void creationSchema(Connection con) throws SQLException {
-        try (PreparedStatement pst = con.prepareStatement("""
-                CREATE TABLE utilisateur (
-                    id INT PRIMARY KEY AUTO_INCREMENT,
-                    nom VARCHAR(30) NOT NULL UNIQUE,
-                    pass VARCHAR(30) NOT NULL
-                )""")) {
+        String tableUtilisateur = "CREATE TABLE utilisateur ("
+                + "id INT AUTO_INCREMENT PRIMARY KEY,"
+                + "surnom VARCHAR(50) NOT NULL UNIQUE,"
+                + "pass VARCHAR(30) NOT NULL"
+                + ")";
+        try (PreparedStatement pst = con.prepareStatement(tableUtilisateur)) {
             pst.executeUpdate();
         }
-    }
+}
 
     public static void suppressionSchema(Connection con) {
-        try (PreparedStatement pst = con.prepareStatement("DROP TABLE utilisateur")) {
+        try(var pst = con.prepareStatement("DROP TABLE utilisateur")) {
             pst.executeUpdate();
         } catch (SQLException e) {
-            // je ne fais rien : si la table n'existe pas, c'est pas grave
-        }
-    }
+            // Si la table n'existe pas, on ignore l'erreur
+         }
+     }
 
     public static void menuGestionSchema(Connection con) {
         int rep = -1;

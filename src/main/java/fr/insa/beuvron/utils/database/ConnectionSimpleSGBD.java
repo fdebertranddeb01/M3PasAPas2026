@@ -76,7 +76,8 @@ public class ConnectionSimpleSGBD {
             throw new SQLException("driver mysql not found", ex);
         }
         Connection con = DriverManager.getConnection(
-                "jdbc:mysql://" + host + ":" + port + "/" + database, database, pass);
+                "jdbc:mysql://" + host + ":" + port + "/" + database,
+                 user, pass);
         // fixe le plus haut degré d'isolation entre transactions
         // risque de dégrader les performances si l'on avait de nombreuses connections
         // simultanée.
