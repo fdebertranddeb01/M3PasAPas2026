@@ -12,7 +12,7 @@ public class GestionSchema {
     public static void creationSchema(Connection con) throws SQLException {
         String tableUtilisateur = "CREATE TABLE utilisateur ("
                 + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                + "surnom VARCHAR(50) NOT NULL UNIQUE,"
+                + "nom VARCHAR(50) NOT NULL UNIQUE,"
                 + "pass VARCHAR(30) NOT NULL"
                 + ")";
         try (PreparedStatement pst = con.prepareStatement(tableUtilisateur)) {
