@@ -67,17 +67,19 @@ public class ConnectionPool {
         }
         config.setJdbcUrl("jdbc:mysql://92.222.25.165:3306/m3_fdebertranddeb01");
         config.setUsername("m3_fdebertranddeb01");
-        try {
-            config.setPassword(Files.readString(Path.of("J:\\beuvron\\dev\\passBdDM3.txt")).trim());
-        } catch (IOException e) {
-            throw new Error("erreur lecture mot de passe", e);
-        }
-        // config.setPassword("je ne le donne pas");
+        // try {
+        // config.setPassword(Files.readString(Path.of("J:\\beuvron\\dev\\passBdDM3.txt")).trim());
+        // } catch (IOException e) {
+        // throw new Error("erreur lecture mot de passe", e);
+        // }
+        config.setPassword("c440f341");
         config.setMaximumPoolSize(2);
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("useServerPrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        // comme j'ai potentiellement plusieurs applications web qui vont se connecter à la même base de donnée
+        // je ne veux pas que le pool de connection garde des connections ouvertes inutilement
+        config.setMinimumIdle(0);
+        config.setIdleTimeout(60000);
+        // de même je ne veux pas de cache pour 
+        config.addDataSourceProperty("cachePrepStmts", "false");
         config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
         ds = new HikariDataSource(config);
     }

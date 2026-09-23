@@ -89,6 +89,7 @@
     </dependencies>
 
     <build>
+        <finalName>pasapas</finalName>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
             <plugin>
