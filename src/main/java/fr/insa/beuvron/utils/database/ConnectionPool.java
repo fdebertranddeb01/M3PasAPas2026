@@ -80,6 +80,7 @@ public class ConnectionPool {
         config.setIdleTimeout(60000);
         // de même je ne veux pas de cache pour 
         config.addDataSourceProperty("cachePrepStmts", "false");
+        // imposer la plus haute isolation entre transactions, même si cela dégrade les performances
         config.setTransactionIsolation("TRANSACTION_SERIALIZABLE");
         ds = new HikariDataSource(config);
     }
